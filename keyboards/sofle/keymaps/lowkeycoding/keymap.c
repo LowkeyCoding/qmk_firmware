@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "animation.h"
 #include "keymap_danish.h"
+#include "shift_keys.h"
 
 enum sofle_layers {
     _QWERTY,
@@ -34,7 +35,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_QWERTY] = LAYOUT(
         DK_GRV, DK_1, DK_2, DK_3, DK_4, DK_5,                   DK_6, DK_7, DK_8, DK_9, DK_0, KC_BSPC,
-        KC_ESC, DK_Q, DK_W, DK_E, DK_R, DK_T,                   DK_Y, DK_U, DK_I, DK_O, DK_P, KC_BSLS,
+        KC_ESC, DK_Q, DK_W, DK_E, DK_R, DK_T,                   DK_Y, DK_U, DK_I, DK_O, DK_P, DK_BSLS,
         KC_TAB, DK_A, DK_S, DK_D, DK_F, DK_G,                   DK_H, DK_J, DK_K, DK_L, DK_SCLN, DK_QUOT,
         KC_LSFT, DK_Z, DK_X, DK_C, DK_V, DK_B, KC_MUTE,     KC_END, DK_N, DK_M, DK_COMM, DK_DOT, DK_SLSH, KC_RSFT,
         KC_LGUI, KC_LALT, KC_LCTL, KC_LOWER, KC_SPC,   KC_ENT, KC_RAISE, KC_RCTL, KC_RALT, KC_RGUI),
@@ -88,6 +89,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_custom_shift_keys(keycode, record)) { return false; }
     switch (keycode) {
         case KC_QWERTY:
             if (record->event.pressed) {
